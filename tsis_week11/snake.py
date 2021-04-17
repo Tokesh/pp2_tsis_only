@@ -34,8 +34,14 @@ class walls_objects:
     def draw_me(self):
         for wall_x,wall_y in self.walls:
             pygame.draw.line(screen, red, (wall_x, wall_y), (wall_x+30,wall_y),10)
-    def generate_wall(self):
-        self.walls.append([random.randint(50,750),random.randint(50,550)])
+    def generate_wall(self,x,y):
+        first_random_x=random.randint(50,x)
+        second_random_x = random.randint(x,750)
+        first_random_y = random.randint(50,y)
+        second_random_y = random.randint(y,550)
+        correct_x = max(abs(first_random_x-x), abs(second_random_x-x))
+        correct_y = max(abs(first_random_y-y), abs(second_random_y-y))
+        self.walls.append([correct_x, correct_y])
 
     
 class food:
@@ -44,6 +50,7 @@ class food:
         self.image.set_colorkey(white)
         self.x = random.randint(50,750)
         self.y = random.randint(50,550)
+        self.lasteaten = None
         self.size = 1
     def gen(self):
         self.x = random.randint(50,750)
@@ -80,8 +87,6 @@ class Snake:
         self.elements[0][1] += self.dy
     def check_collision_with_main(self): 
         for i in range(1,len(self.elements)):
-            print(self.elements[0][0] == self.elements[i][0])
-            print(self.elements[0][1] == self.elements[i][1])
             if self.elements[0][0] == self.elements[i][0] and self.elements[0][1] == self.elements[i][1]:
                 return True
         return False
@@ -239,12 +244,15 @@ while game:
 
         if(snake1.check_food(apple.x,apple.y)):
             snake1.is_grow = True
+            apple.lasteaten = 'snake1'
             apple.gen()
         if(snake2.check_food(apple.x,apple.y)):
             snake2.is_grow = True
+            apple.lasteaten = 'snake2'
             apple.gen()
         if(apple.size % 5 == 0):
-            walling.generate_wall()
+            if(apple.lasteaten == 'snake1'): walling.generate_wall(snake1.elements[0][0], snake1.elements[0][1])
+            else: walling.generate_wall(snake2.elements[0][0], snake2.elements[0][1])
             apple.size += 1
             FPS += 1
         for x,y in walling.walls:
@@ -262,7 +270,6 @@ while game:
         snake1.move()
         snake2.move()
         if(snake1.check_collision_with_main() == True):
-            print(1)
             time.sleep(2)
             last_win = 2
             restart = True
