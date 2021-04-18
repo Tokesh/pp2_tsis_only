@@ -61,13 +61,15 @@ color = white
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Paint")
 clock = pygame.time.Clock()
-run = False
+run = True
 settings=True
 FPS = 30
 draw_status = False
 last_pos = (0, 0)
 screen.fill(white)
 hide_radius = True
+tools_image = pygame.image.load('colors.png')
+tools = pygame.image.load('tools_v2.png')
 #mode = 0 - classic, 1 - circle, 2 rectangle
 x1_rect = 0
 y1_rect = 0
@@ -76,7 +78,7 @@ y2_rect = 0
 
 
 while application:
-    while settings:
+    """ while settings:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: application = False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
@@ -85,9 +87,11 @@ while application:
                 settings = False
         screen.blit(font.render('To choose color press:Golden(T), Red(R), Green(G)', True, black), (50,50))
         screen.blit(font.render('Draw rectangle(O), Draw circle(C), Back to classic(CAPS_LOCK), Eraser(E), Screenshot(ESC)', True, black),(50,100))
-        pygame.display.flip()
+        pygame.display.flip() """
     while run:
-        if hide_radius: screen.blit(font.render(f"current radius: {radius}", True, golden),(900,100))
+        screen.blit(tools_image,(0,0))
+        screen.blit(tools, (352,0))
+        if hide_radius: screen.blit(font.render(f"current radius: {radius}", True, black),(20,65))
         for event in pygame.event.get():
             if event.type == pygame.QUIT: application = False
             if event.type == pygame.KEYDOWN:
@@ -102,6 +106,20 @@ while application:
                 if(event.key== pygame.K_CAPSLOCK): mode = 0
                 if(event.key == pygame.K_c): mode = 1
                 if(event.key == pygame.K_o): mode = 2
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                xxx,yyy = event.pos # 65:60
+                if(xxx in range(0,65) and yyy in range(0,60)): color = golden
+                if(xxx in range(66, 139) and yyy in range(0,60)): color = red
+                if(xxx in range(141, 208) and yyy in range(0,60)): color = green
+                if(xxx in range(210,278) and yyy in range(0,60)): color = purple
+                if(xxx in range(280,347) and yyy in range(0,60)): color = silver
+                if(xxx in range(353,417) and yyy in range(0,60)): mode = 1
+                if(xxx in range(424,492) and yyy in range(0,60)): mode = 2
+                if(xxx in range(497,561) and yyy in range(0,60)): 
+                    mode = 0
+                    color = white
+                if(xxx in range(562,629) and yyy in range(0,60)): radius += 5
+                if(xxx in range(633,700) and yyy in range(0,60)): radius -= 5
             if(mode == 0):
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pygame.draw.circle(screen, color, event.pos, radius)

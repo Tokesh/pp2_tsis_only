@@ -27,6 +27,9 @@ purple = (128,0,128)
 golden = (255,223,0)
 sin_color = (181, 0, 0)
 cos_color = (10, 113, 255)
+random_color_for_snake = [white,blue,green,red,lime,yellow,silver,purple,golden]
+pygame.mixer.music.load("background_music.mp3")
+pygame.mixer.music.play(-1)
 
 class walls_objects:
     def __init__(self, walls = None):
@@ -64,6 +67,7 @@ class food:
 class Snake:
     def __init__(self,x,y, size = None, dx=None, dy = None, is_grow = None,elements=None):
         self.size = 1
+        self.color = random_color_for_snake[random.randint(0,8)]
         self.elements = [[x,y]]
         self.radius = 12
         self.dx = 5
@@ -71,7 +75,7 @@ class Snake:
         self.is_grow = False
     def draw_circle(self):
         for element in self.elements:
-            pygame.draw.circle(screen, purple, element, 12)
+            pygame.draw.circle(screen, self.color, element, 12)
     def add_to_snake(self):
         self.elements.append([0,0])
         self.size += 1
@@ -278,11 +282,22 @@ while game:
             time.sleep(2)
             last_win = 1
             restart = True
-            run = False    
+            run = False
+        for i in range(1,snake1.size):
+            if(snake2.elements[0][0] in range(snake1.elements[i][0], snake1.elements[i][0]+10) and snake2.elements[0][1] in range(snake1.elements[i][1], snake1.elements[i][1]+10) and snake1.size != 1 and snake2.size != 1):
+                time.sleep(2)
+                last_win = 1
+                restart = True
+                run = False
+        for i in range(1,snake2.size):
+            if(snake1.elements[0][0] in range(snake2.elements[i][0], snake2.elements[i][0]+10) and snake1.elements[0][1] in range(snake2.elements[i][1], snake2.elements[i][1]+10) and snake1.size != 1 and snake2.size != 1):
+                time.sleep(2)
+                last_win = 2
+                restart = True
+                run = False
         apple.draw()
         snake1.draw_circle()
         snake2.draw_circle()
-                    
         clock.tick(FPS)
         pygame.display.flip()
 pygame.quit()
