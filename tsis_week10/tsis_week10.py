@@ -22,7 +22,7 @@ class main_car(pygame.sprite.Sprite):
         super().__init__()
         self.x = 160
         self.y = 500
-        self.image = pygame.image.load("Player.png")
+        self.image = pygame.image.load("sprites/Player.png")
         self.surface = pygame.Surface((40,80))
 
 class enemy(pygame.sprite.Sprite):
@@ -30,7 +30,7 @@ class enemy(pygame.sprite.Sprite):
         super().__init__()
         self.x = random.randint(10,345)
         self.y = -80
-        self.image = pygame.image.load("Enemy.png")
+        self.image = pygame.image.load("sprites/Enemy.png")
         self.surface = pygame.Surface((40,80))
         self.speed = random.randint(1,5)
     
@@ -39,7 +39,7 @@ class coins(pygame.sprite.Sprite):
         super().__init__()
         self.x = random.randint(10,345)
         self.y = -120
-        self.image = pygame.image.load("coint.png")
+        self.image = pygame.image.load("sprites/coint.png")
         self.surface = pygame.Surface((35,35))
         self.speed = random.randint(3,8)
 
@@ -52,7 +52,7 @@ max_score = 0
 size=(400,600)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Cars")
-background = pygame.image.load("AnimatedStreet.png")
+background = pygame.image.load("sprites/AnimatedStreet.png")
 run = False
 application = True
 after_game = False
@@ -61,7 +61,7 @@ clock = pygame.time.Clock()
 my_car = main_car()
 first_enemy = enemy()
 font = pygame.font.SysFont("arial",30)
-pygame.mixer.music.load("background.wav")
+pygame.mixer.music.load("sprites/background.wav")
 pygame.mixer.music.play(-1)
 fontz = pygame.font.Font(None, 50)
 
@@ -121,7 +121,7 @@ while application:
             if(cars.y in range(my_car.y-80,580) and my_car.x in range(cars.x - 38, cars.x + 38)):
                 max_score = max(total_score, max_score)
                 pygame.mixer.music.stop()
-                pygame.mixer.Sound('crash.wav').play()
+                pygame.mixer.Sound('sprites/crash.wav').play()
                 time.sleep(5)
                 after_game = True
                 run = False

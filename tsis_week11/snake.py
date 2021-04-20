@@ -28,7 +28,7 @@ golden = (255,223,0)
 sin_color = (181, 0, 0)
 cos_color = (10, 113, 255)
 random_color_for_snake = [white,blue,green,red,lime,yellow,silver,purple,golden]
-pygame.mixer.music.load("background_music.mp3")
+pygame.mixer.music.load("sprites/background_music.mp3")
 pygame.mixer.music.play(-1)
 
 class walls_objects:
@@ -49,7 +49,7 @@ class walls_objects:
     
 class food:
     def __init__(self):
-        self.image=pygame.image.load("apple.png")
+        self.image=pygame.image.load("sprites/apple.png")
         self.image.set_colorkey(white)
         self.x = random.randint(50,750)
         self.y = random.randint(50,550)
